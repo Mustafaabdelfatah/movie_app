@@ -1,0 +1,131 @@
+خلونا نفهم كده بالبلدي عندي حاجه اسمها 
+role ال دي بتتكون من وبيبقي اسمها مثلا super admin
+
+permission
+permission
+ الرول اللي اسمها سوبر ادمن دي بتعمل كل الحاجات كل الحاجات دي بنقسمها بقي بيرميشن 
+يعني مثلا عنده صلاحيه انه يضيف يوزر او يمسح او يعدل 
+
+وممكن اعمل رول تانيه مثلا اسمها ادمن واحدد الصلاحيات ليه وهكذا بقي
+
+
+
+
+
+وده التسطيب كله 
+
+composer require "santigarcor/laratrust:5.2.*"
+
+php artisan vendor:publish --tag="laratrust"
+
+php artisan config:clear
+
+php artisan laratrust:setup --no-interaction
+
+php artisan config:clear
+
+composer dump-autoload
+
+
+php artisan laratrust:seeder
+
+composer dump-autoload
+
+كده خلصنا تسطيب
+
+نروح بقي لل DatabaseSeeder 
+
+ونحط   $this->call([
+            LaratrustSeeder::class,
+            UsersTableSeeder::class,
+        ]);
+
+
+وبعدين نروح نعمل سيدر جديد اسمه يوزر 
+
+ php artisan make:seeder UsersTableSeeder
+
+واروح بقي احط يوزر جديد نسميه super admin مثلا
+
+ $user = \App\User::create([
+            'name' => 'super_admin',
+            'email' => 'super_admin@app.com',
+            'password' => bcrypt('123456'),
+        ]);
+
+        $user->attachRole('super_admin');
+
+بعدين اروح علي ملف laratrust_seeder.php اللي في ال config
+
+واعدل بقي مثلا 
+
+  'role_structure' => [
+        'super_admin' => [
+            'users' => 'c,r,u,d',
+            'categories' => 'c,r,u,d',
+
+        ],
+        'admin' => [],
+
+        'user' => [],
+
+    ],
+    'permission_structure' => [
+         
+    ],
+
+وهكذا بقي لما احب اضيف اي قسم 
+
+بعدين اروح ل laratrus_seeder.php اللي في ال seed
+
+اعمل كومنت علي             // Create default user for each role
+
+عشان ميكريتش هو يوزر من نفسه 
+/* $user = \App\User::create([
+                'name' => ucwords(str_replace('_', ' ', $key)),
+                'email' => $key.'@app.com',
+                'password' => bcrypt('password')
+            ]);
+
+            $user->attachRole($role);
+            */
+
+
+
+
+
+
+بعدين بقي اعمل php artisan migrate:refresh --seed
+
+نروح لملف الراوت بقي ونحط في ملفات الداشبورد ده
+
+
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth','role:super_admin|admin'])->group(function(){
+
+
+
+});
+
+كده محدش يقدر يدخل علي الداشبورد بتاعتي غير السوبر ادمن او الادمن
+
+
+
+
+
+///// طيب انا بقي لو عايز اعمل رولز جديده 
+
+php artisan make:controller RoleController  -r
+
+in routes 
+
+Route::resource('roles','RoleController')
+
+وانا اصلا عندي المودل والداتابيز
+
+
+/////// permission in create.blade.php
+
+
+
+
+  

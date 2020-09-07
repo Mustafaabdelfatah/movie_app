@@ -1,0 +1,32 @@
+هحط scope في ال مودل عشان اقدر انادي عليها من الكنترولر 
+ده في المودل
+
+  //scopes --------------------------------------
+    public function scopeWhenSearch($query, $search)
+    {
+        return $query->when($search, function ($q) use ($search) {
+            return $q->where('name', 'like', "%$search%");
+        });
+
+    }// end of scopeWhenSearch
+
+وده في الكنترولر 
+
+  
+$categories = Category::WhenSearch(request()->search)->paginate(2);
+
+وفي الاندكس
+
+    <div class="col-md-4">
+          <div class="form-group">
+               <input type="text" name="search" autofocus class="form-control" placeholder="search" value="{{ request()->search }}">
+          </div>
+     </div><!-- end of col -->
+
+    <div class="col-md-4">
+    	<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+    	<a href="{{ route('dashboard.categories.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Add</a>
+	<a href="#" disabled="" class="btn btn-primary"><i class="fa fa-plus"></i> Add</a>
+    </div>
+
+كده هيعمل سيرش بالاسم 

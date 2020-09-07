@@ -1,0 +1,45 @@
+طبعا هبقي منزل النوتي وحاطط ملفاتها ف المشروع وكله تمام زي ما قلت ف الملف اللي فات لما قلت ازاي هستخدم النوتي
+المره دي بقي عايزين نستخدمها عشان لما ندوس ع زرار الحذف يجيلي اشعار كده بان هل تريد الحذف بشكل جميل
+هنحط الكود ده بس في ال app
+
+
+
+
+
+    $(document).ready(function () {
+
+        $(document).on('click', '.delete', function (e) {
+            e.preventDefault();
+
+            var that = $(this);
+
+            var n = new Noty({
+                text: "Confirm deleting record",
+                killer: true,
+                buttons: [
+                    Noty.button('Yes', 'btn btn-success mr-2', function () {
+                        that.closest('form').submit()
+                    }),
+
+                    Noty.button('No', 'btn btn-danger', function () {
+                        n.close();
+                    }),
+                ]
+            });
+
+            n.show();
+        });
+
+    });//end of document ready
+
+
+هنروح الاول نحط كلاس delete في ال الزرار بتاع الحذف
+
+ <form method="post" action="{{ route('dashboard.categories.destroy', $category->id) }}" style="display: inline-block;">
+           @csrf
+            @method('delete')
+    <button type="submit" class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i> Delete</button>
+ </form><!-- end of form -->
+
+
+بس كده

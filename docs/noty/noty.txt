@@ -1,0 +1,33 @@
+ال noty دي بلاجن جميله جدا بستخدمها عشان تعملي سيشن جميل لما يحصل حاجه بدل السيشن العادي
+
+عشان استخدمها لازم الخطوات دي انا طبعا هكون نزلتها ومعايا الملفين دول
+
+noty.css
+noty.min.js
+
+الملفين دول هحطهم في ال public واستدعيهم في المشروع عندي مثلا كده
+
+
+    <!-- noty -->
+    <link rel="stylesheet" href="{{ asset('dashboard_files/plugins/noty/noty.css')}}">
+    <script src="{{ asset('dashboard_files/plugins/noty/noty.min.js')}}"></script>
+
+بعدين بقي اروح اعمل ملف session.blade لو مش عامل
+
+واحط فيه الكود ده
+
+@if (session('success'))
+    <script>
+        new Noty({
+            layout: 'topRight',
+            text: "{{session('success') }}",
+            killer: true,
+            timeout: 2000,
+        }).show();
+    </script>
+@endif
+
+وبعدين اروح علي ملف ال app واعمل انكلود لملف السيشن
+
+      @include('dashboard.partials._sessions')
+بس كده

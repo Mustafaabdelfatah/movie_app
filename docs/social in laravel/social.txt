@@ -1,0 +1,37 @@
+composer require laravel/socialite
+ انزل الباكدج دي 
+بعديم افتح ملف ال SERVICES  اللي في الكونفيج
+
+بعدين احط 
+
+ 'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect' => env('FACEBOOK_REDIRECT_URL'),
+    ],
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URL'),
+    ],
+
+علي حسب اللي معايا بقي انا ف المشروع فيسبوك وجوجل بس يبقي احطهم كده 
+بعدين اروح علي اللوجن كنترولر واحط دول
+ public function redirectToProvider($provider)
+    {
+        return Socialite::driver($provider)->redirect();
+    }
+ 
+    public function handleProviderCallback($provider)
+    {
+        $user = Socialite::driver($provider)->user();
+
+        // $user->token;
+    }
+
+
+بعدين نروح علي ملف الراوت ونحط الاتنين راوت دول
+
+Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider')->where('provider' , 'facebook|google');
+Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback')->where('provider' , 'facebook|google');

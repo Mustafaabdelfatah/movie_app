@@ -1,0 +1,45 @@
+composer require anlutro/l4-settings
+
+php artisan vendor:publish --provider="anlutro\LaravelSettings\ServiceProvider" --tag="config"
+
+
+الباكدج دي بتتيح ليها فايل اسمه سيتنج . جيسون بيبقي فيه كل الداتا بتاعتي 
+
+
+/////////
+
+هعمل 
+
+
+    //settings
+
+    Route::get('/settings/social_login','SettingController@social_login')->name('settings.social_login');
+    Route::get('/settings/social_links','SettingController@social_links')->name('settings.social_links');
+    Route::post('/settings','SettingController@store')->name('settings.store');
+
+    // SettingController
+
+ public function social_login(){
+
+        return view('dashboard.settings.social_login');
+
+    }
+
+    public function social_links(){
+
+        return view('dashboard.settings.social_links');
+
+    }
+    public function store(Request $request){
+
+        $d = setting($request->all())->save();
+        
+        session()->flash('success', 'Data added successfully');
+        return redirect()->back();
+
+    }
+	
+///////////////
+
+في الفيو بيبقي عندي بقي فايلين واحد للينكات وواحد للوجن 
+بحط فيه الانبتس بتاعتي 
